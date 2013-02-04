@@ -1,0 +1,30 @@
+
+class Node{
+public:
+	Node* children[26];
+	int hash_value;
+};
+
+bool check(const char* word_start, const char* word_end, Node* trie){
+	if(word_start == word_end) return true;
+
+	if(trie->children[*word_start - 'a']){
+		return check(word_start+1,word_end,trie->children[*word_start - 'a']);
+	}
+
+	return false;
+}
+
+int check_composite(const char* word, Node* trie){
+	
+	if(*word == 0) return 1;
+
+	const char* p = word;
+
+	while(*p){
+		if(check(trie,word,p+1) && check_composite(p+1,trie)){
+			return 1;
+		}
+	}
+	return 0;
+}
